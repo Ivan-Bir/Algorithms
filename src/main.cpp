@@ -8,6 +8,7 @@
 #include "IGraph.h"
 #include "ListGraph.h"
 #include "MatrixGraph.h"
+#include "SetGraph.h"
 
 void BFS(const IGraph& graph, int vertex, const std::function<void(int)> visit) {
     std::vector<char> visited(graph.VerticesCount(), 0);
