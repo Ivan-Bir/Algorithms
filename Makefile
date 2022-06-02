@@ -3,6 +3,8 @@ TEST_TARGET = ./test_graph
 
 all: clean build test memtest
 
+rebuild: clean build
+
 build:
 	./build.sh
 
