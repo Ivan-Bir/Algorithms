@@ -11,6 +11,7 @@
 #include "ListGraph.h"
 #include "MatrixGraph.h"
 #include "ArcGraph.h"
+#include "SetGraph.h"
 
 #include "utils.hpp"
 
@@ -31,6 +32,7 @@ static std::vector<std::vector<int>> prev_cases = {
     {3},
     {0, 2, 4},
 };
+
 
 TEST(ListFromMatrix, Copy) {
     std::unique_ptr<IGraph> Mgraph = std::make_unique<MatrixGraph>(6);
@@ -71,5 +73,54 @@ TEST(ListFromArc, Copy) {
     for (int i = 0; i < Lgraph->VerticesCount(); ++i) {
         EXPECT_TRUE(compare_vectors(next_cases[i], Lgraph->GetNextVertices(i)));
         EXPECT_TRUE(compare_vectors(prev_cases[i], Lgraph->GetPrevVertices(i)));
+    }
+}
+
+TEST(ListFromSet, Copy) {
+    std::unique_ptr<IGraph> Sgraph = std::make_unique<SetGraph>(6);
+    Sgraph->AddEdge(0,2);
+    Sgraph->AddEdge(0,5);
+    Sgraph->AddEdge(1,3);
+    Sgraph->AddEdge(2,1);
+    Sgraph->AddEdge(2,5);
+    Sgraph->AddEdge(3,2);
+    Sgraph->AddEdge(3,4);
+    Sgraph->AddEdge(4,0);
+    Sgraph->AddEdge(4,5);
+    Sgraph->AddEdge(5,0);
+
+    std::unique_ptr<IGraph> Lgraph = std::make_unique<ListGraph>(*Sgraph);
+
+    for (int i = 0; i < Lgraph->VerticesCount(); ++i) {
+        auto tmp = Lgraph->GetNextVertices(i);
+        std::sort(tmp.begin(), tmp.end());
+
+        EXPECT_TRUE(compare_vectors(next_cases[i], tmp));
+
+        tmp = Lgraph->GetPrevVertices(i);
+        std::sort(tmp.begin(), tmp.end());
+
+        EXPECT_TRUE(compare_vectors(prev_cases[i], tmp));
+    }
+}
+
+TEST(ListFromList, Copy) {
+    std::unique_ptr<IGraph> Lgraph = std::make_unique<ListGraph>(6);
+    Lgraph->AddEdge(0,2);
+    Lgraph->AddEdge(0,5);
+    Lgraph->AddEdge(1,3);
+    Lgraph->AddEdge(2,1);
+    Lgraph->AddEdge(2,5);
+    Lgraph->AddEdge(3,2);
+    Lgraph->AddEdge(3,4);
+    Lgraph->AddEdge(4,0);
+    Lgraph->AddEdge(4,5);
+    Lgraph->AddEdge(5,0);
+
+    std::unique_ptr<IGraph> newLgraph = std::make_unique<ListGraph>(*Lgraph);
+
+    for (int i = 0; i < newLgraph->VerticesCount(); ++i) {
+        EXPECT_TRUE(compare_vectors(next_cases[i], newLgraph->GetNextVertices(i)));
+        EXPECT_TRUE(compare_vectors(prev_cases[i], newLgraph->GetPrevVertices(i)));
     }
 }

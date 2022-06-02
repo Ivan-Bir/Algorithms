@@ -11,6 +11,7 @@
 #include "ListGraph.h"
 #include "MatrixGraph.h"
 #include "ArcGraph.h"
+#include "SetGraph.h"
 
 #include "utils.hpp"
 
@@ -73,5 +74,54 @@ TEST(ArcFromList, Copy) {
     for (int i = 0; i < Agraph->VerticesCount(); ++i) {
         EXPECT_TRUE(compare_vectors(next_cases[i], Agraph->GetNextVertices(i)));
         EXPECT_TRUE(compare_vectors(prev_cases[i], Agraph->GetPrevVertices(i)));
+    }
+}
+
+TEST(ArcFromSet, Copy) {
+    std::unique_ptr<IGraph> Sgraph = std::make_unique<SetGraph>(6);
+    Sgraph->AddEdge(0,2);
+    Sgraph->AddEdge(0,5);
+    Sgraph->AddEdge(1,3);
+    Sgraph->AddEdge(2,1);
+    Sgraph->AddEdge(2,5);
+    Sgraph->AddEdge(3,2);
+    Sgraph->AddEdge(3,4);
+    Sgraph->AddEdge(4,0);
+    Sgraph->AddEdge(4,5);
+    Sgraph->AddEdge(5,0);
+
+    std::unique_ptr<IGraph> Agraph = std::make_unique<ArcGraph>(*Sgraph);
+
+    for (int i = 0; i < Agraph->VerticesCount(); ++i) {
+        auto tmp = Agraph->GetNextVertices(i);
+        std::sort(tmp.begin(), tmp.end());
+
+        EXPECT_TRUE(compare_vectors(next_cases[i], tmp));
+
+        tmp = Agraph->GetPrevVertices(i);
+        std::sort(tmp.begin(), tmp.end());
+
+        EXPECT_TRUE(compare_vectors(prev_cases[i], tmp));
+    }
+}
+
+TEST(ArcFromArc, Copy) {
+    std::unique_ptr<IGraph> Agraph = std::make_unique<ArcGraph>(6);
+    Agraph->AddEdge(0,2);
+    Agraph->AddEdge(0,5);
+    Agraph->AddEdge(1,3);
+    Agraph->AddEdge(2,1);
+    Agraph->AddEdge(2,5);
+    Agraph->AddEdge(3,2);
+    Agraph->AddEdge(3,4);
+    Agraph->AddEdge(4,0);
+    Agraph->AddEdge(4,5);
+    Agraph->AddEdge(5,0);
+
+    std::unique_ptr<IGraph> newAgraph = std::make_unique<ArcGraph>(*Agraph);
+
+    for (int i = 0; i < newAgraph->VerticesCount(); ++i) {
+        EXPECT_TRUE(compare_vectors(next_cases[i], newAgraph->GetNextVertices(i)));
+        EXPECT_TRUE(compare_vectors(prev_cases[i], newAgraph->GetPrevVertices(i)));
     }
 }

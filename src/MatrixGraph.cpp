@@ -38,6 +38,7 @@ MatrixGraph::MatrixGraph (const IGraph& graph) {
 void MatrixGraph::AddEdge(int from, int to) {
     assert(from >= 0 && from < matrix.size());
     assert(to >= 0 && to < matrix.size());
+
     matrix[from][to] = EXIST_WAY;
 }
 
@@ -47,6 +48,7 @@ int MatrixGraph::VerticesCount() const {
 
 std::vector<int> MatrixGraph::GetNextVertices(int vertex) const {
     assert(vertex >= 0 && vertex < matrix.size());
+
     std::vector<int> nextVerticies;
     for (size_t i = 0; i < matrix.size(); ++i) {
         if (matrix[vertex][i] == EXIST_WAY) {
@@ -58,6 +60,7 @@ std::vector<int> MatrixGraph::GetNextVertices(int vertex) const {
 
 std::vector<int> MatrixGraph::GetPrevVertices(int vertex) const {
     assert(vertex >= 0 && vertex < matrix.size());
+
     std::vector<int> prevVerticies;
     for (size_t i = 0; i < matrix.size(); ++i) {
         if (matrix[i][vertex] == EXIST_WAY) {

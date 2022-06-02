@@ -16,7 +16,7 @@ void printMatrix(std::vector<std::vector<T>> matrix) {
 
 template<typename T>
 void printGivenVertices(std::vector<T> next_vertices) {
-    std::cout << "Given Vertices:" << std::endl;
+    // std::cout << "Given Vertices:" << std::endl;
     std::for_each(next_vertices.begin(), next_vertices.end(), [](int v) {std::cout << v << ", ";});
     std::cout << std::endl;
 }

@@ -26,6 +26,7 @@ ArcGraph::ArcGraph (const IGraph& graph) : count_vertices(graph.VerticesCount())
 void ArcGraph::AddEdge(int from, int to) {
     assert(from >= 0 && from < count_vertices);
     assert(to >= 0 && to < count_vertices);
+
     edges.push_back(Edge(from, to));
 }
 
@@ -35,6 +36,7 @@ int ArcGraph::VerticesCount() const {
 
 std::vector<int> ArcGraph::GetNextVertices(int vertex) const {
     assert(vertex >= 0 && vertex < VerticesCount());
+
     std::vector<int> nextVerticies;
     std::for_each(edges.begin(), edges.end(), [&](Edge v) {
         if (v.from == vertex) {
@@ -46,8 +48,8 @@ std::vector<int> ArcGraph::GetNextVertices(int vertex) const {
 
 std::vector<int> ArcGraph::GetPrevVertices(int vertex) const {
     assert(vertex >= 0 && vertex < VerticesCount());
-    std::vector<int> prevVerticies;
 
+    std::vector<int> prevVerticies;
     std::for_each(edges.begin(), edges.end(), [&](Edge v) {
         if (v.to == vertex) {
             prevVerticies.push_back(v.from);
